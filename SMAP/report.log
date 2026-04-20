@@ -1,0 +1,7 @@
+2026-04-20 14:37:37,329 - numexpr.utils - INFO - NumExpr defaulting to 12 threads.
+2026-04-20 14:37:38,807 - pyswarms.single.global_best - INFO - Optimize for 250 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.9}
+2026-04-20 14:38:30,627 - pyswarms.single.global_best - INFO - Optimization finished | best cost: -0.8825488755737112, best pos: [2.48032071e+03 3.38780759e+00 3.47960298e+00 1.02475905e+00
+ 6.24954802e+01 5.57195069e+01]
+2026-04-20 14:40:24,365 - pyswarms.single.global_best - INFO - Optimize for 250 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.9}
+2026-04-20 14:41:17,674 - pyswarms.single.global_best - INFO - Optimization finished | best cost: -0.8828493750401354, best pos: [2.48626823e+03 3.47616457e+00 2.77328649e+00 1.02746472e+00
+ 7.50580528e+01 5.58579281e+01]
