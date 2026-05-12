@@ -25,15 +25,12 @@ path_nc = list_nc[0]
 for path_shp in list_shp:
     
     shp_buffer = gpd.read_file(path_shp)
-    #Caso a regiões seja muito pequena, pode-se usar o buffer abaixo
-    # shp_buffer = gpd.GeoDataFrame(geometry = shp_base.buffer(0.1), crs = shp_base.crs)
 
-    # if "Congonhas" in path_shp:
-    #     shp_buffer = gpd.GeoDataFrame(geometry = shp_base.buffer(0.05), crs = shp_base.crs)
-    # else:
-    #     shp_buffer = shp_base
 
-    for list_nc in [list_pr]:
+    for list_nc in [list_ETP]:
+
+        merged_df = None
+
         for path_nc in list_nc:
 
             nc_data = xr.open_dataset(path_nc, engine = "netcdf4")
@@ -57,23 +54,29 @@ for path_shp in list_shp:
             index_list = pd.Index(nc_data.time.values)
             index_list = index_list.insert(0, "lat")
             index_list = index_list.insert(0, "lon")
-            ts_df = pd.DataFrame(index = index_list)
+
+            ts_dict = {}
 
             count = 0
             for i, j in zip(coords_ins.lon, coords_ins.lat):
                 ts = nc_data[var_label].sel(longitude = i, latitude = j).to_dataframe()[var_label]
 
                 ts = pd.concat([pd.Series([i,j], index = ["lon", "lat"]), ts])
-                ts_df.insert(len(ts_df.columns), count, ts)
+                ts_dict[count] = ts
                 count += 1
 
-            ts_df = ts_df.T
+            ts_df = pd.DataFrame(ts_dict).T
 
-            if path_nc == list_nc[0]:
+            if merged_df is None:
+
                 merged_df = ts_df
+            
             else:
                 merged_df = merged_df.merge(ts_df, on = ["lon", "lat"])
-        merged_df = merged_df.T
+
+        if merged_df is not None:       
+            merged_df = merged_df.T
+
         merged_df.to_csv("{}_{}.csv".format(var_label, path_shp.split("\\")[-1].split(".")[0]))
     
 #%%
